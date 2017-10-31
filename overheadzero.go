@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 )
 
 // run a development server.
@@ -20,14 +19,14 @@ func run(args []string) int {
 		fmt.Fprintf(w, "Welcome to %q", html.EscapeString(r.URL.Path))
 	})
 
-	var err error
+	var addr string
 	if len(args) == 0 {
-		println("Starting a Server (:5000)")
-		err = http.ListenAndServe(":5000", nil)
+		addr = ":5000"
 	} else {
-		println("Starting a Server (", strings.Join(args, " "), ")")
-		err = http.ListenAndServe(args[0], nil)
+		addr = args[0]
 	}
+	println("Starting a Server (", addr, ")")
+	err := http.ListenAndServe(addr, nil)
 	if err != nil {
 		log.Fatal("Error: ", err)
 	}
